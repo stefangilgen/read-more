@@ -1,0 +1,17 @@
+# IDE & System Files
+.DS_Store
+.idea
+.vscode
+*.swp
+*.swo
+
+# Dependency directories
+/node_modules
+/vendor
+
+# Build directories
+/dist
+/build
+
+# Logs
+*.log 
