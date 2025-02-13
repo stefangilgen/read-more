@@ -1,0 +1,88 @@
+Projektbriefing: WordPress-Plugin "Read More"
+
+Ziel:
+Das Plugin "Read More" soll die Benutzererfahrung verbessern, indem es den "Weiterlesen"-Link innerhalb von Beiträgen in der Blog-Übersicht (Post-Loop) per AJAX erweitert, anstatt auf die Einzelansicht des Beitrags zu leiten. Beim Klick auf den Link wird der restliche Beitrag nachgeladen und direkt im Loop ausgegeben.
+
+Funktionsweise:
+
+Identifikation des "Weiterlesen"-Links:
+
+Der Link wird standardmässig durch den WordPress-Block "Mehr" (<!--more-->) im Backend generiert.
+
+Er erscheint im Frontend als <a class="more-link" href="…">.
+
+AJAX-Handling:
+
+Beim Klick auf den "Weiterlesen"-Link soll der restliche Beitrag per AJAX geladen werden.
+
+Die Anfrage muss sicher und performant umgesetzt werden (z.B. über wp_ajax_ und wp_ajax_nopriv_ für nicht eingeloggte Nutzer).
+
+Ersetzen des Links durch den restlichen Beitrag:
+
+Nach erfolgreicher AJAX-Antwort wird der HTML-Inhalt ab dem "Mehr"-Tag in den Beitrag eingefügt.
+
+Der ursprüngliche "Weiterlesen"-Link wird entfernt.
+
+Performance & Sicherheit:
+
+Beiträge sollen nur einmalig nachgeladen werden, um unnötige Anfragen zu vermeiden.
+
+XSS- und CSRF-Schutz einbauen (z.B. durch Nonce-Verifizierung bei der AJAX-Anfrage).
+
+Lazy Loading oder Caching-Mechanismen in Betracht ziehen, um die Serverlast zu minimieren.
+
+Technische Anforderungen:
+
+Kompatibilität mit aktuellen WordPress-Versionen (mindestens WP 6.x).
+
+Unterstützung für Standard- und benutzerdefinierte Themes (möglichst generische Selektoren verwenden).
+
+Unterstützung für blockbasierte und klassische Editor-Implementierungen des "Mehr"-Tags.
+
+Nutzung von WordPress-Standards für Skript- und Style-Einbindung (z.B. wp_enqueue_script).
+
+Minimaler Eingriff in bestehende Themes und Plugins (kein hartes Überschreiben von Templates oder direkter Datenbankeingriff).
+
+Bekannte Probleme & Herausforderungen:
+
+Mehrfaches Nachladen:
+
+Sicherstellen, dass der Beitrag nur einmal erweitert wird.
+
+Prüfen, ob der Inhalt bereits geladen wurde, bevor eine neue Anfrage gesendet wird.
+
+Kompatibilität mit Themes:
+
+Einige Themes überschreiben oder modifizieren den "Weiterlesen"-Link anders als der Standard.
+
+Eventuell müssen Theme-spezifische Anpassungen gemacht oder eine Fallback-Methode eingebaut werden.
+
+Lazy Loading von Bildern & anderen Medien:
+
+Falls der Beitrag Bilder oder andere Medien enthält, muss sichergestellt sein, dass diese korrekt nachgeladen werden.
+
+SEO & Accessibility:
+
+Der nachgeladene Content sollte so strukturiert sein, dass er weiterhin von Suchmaschinen erkannt wird.
+
+Sicherstellen, dass Screenreader und andere assistive Technologien den nachgeladenen Content erfassen können.
+
+Fallback für JavaScript-Deaktivierung:
+
+Falls JavaScript deaktiviert ist, sollte der Link weiterhin wie gewohnt auf die Einzelansicht des Beitrags führen.
+
+Erwartete Deliverables:
+
+WordPress-Plugin als ZIP und Repository (GitHub).
+
+Dokumentation zur Installation und Nutzung.
+
+Hinweise zur Erweiterbarkeit (z.B. Hooks für Entwickler).
+
+Sonstige Hinweise:
+
+Verwenden von nativen WordPress-Funktionen, wo möglich.
+
+Saubere Code-Struktur und Kommentare für Wartbarkeit.
+
+Plugin nach WP-Standards für Internationalisierung (i18n) vorbereiten.
