@@ -1,37 +1,24 @@
-# Read More Ajax
+# WordPress Read More Plugin
 
-Ein WordPress Plugin, das "Weiterlesen"-Links per AJAX nachladen lässt, ohne die Seite neu zu laden.
+Ein WordPress-Plugin, das Beiträge dynamisch über AJAX lädt, ohne die Seite neu zu laden.
 
 ## Features
 - Lädt Beitragsinhalte dynamisch nach
-- Smooth Animations beim Ein-/Ausblenden
-- Fallback wenn JavaScript deaktiviert ist
-- Unterstützt den WordPress Block Editor und Classic Editor
-- Leichtgewichtig und performant
+- Verbesserte Benutzerfreundlichkeit
+- Keine Seitenneuladen erforderlich
+- Einfache Integration
 
 ## Installation
-1. Laden Sie den Plugin-Ordner in das `/wp-content/plugins/` Verzeichnis hoch
+1. Laden Sie das Plugin in das `/wp-content/plugins/` Verzeichnis hoch
 2. Aktivieren Sie das Plugin im WordPress Admin-Bereich
-3. Verwenden Sie den "Mehr"-Block (<!--more-->) in Ihren Beiträgen
+3. Das Plugin funktioniert automatisch mit Ihrem bestehenden "Weiterlesen" Link
 
 ## Verwendung
-Fügen Sie einfach einen "Mehr"-Block in Ihren Beitrag ein:
-- **Block Editor**: Fügen Sie den "Mehr"-Block an der gewünschten Stelle ein
-- **Classic Editor**: Klicken Sie auf den "Weiterlesen"-Button in der Editor-Toolbar
+Das Plugin ersetzt automatisch das Standard-Verhalten des "Weiterlesen" Links. Es sind keine weiteren Einstellungen erforderlich.
 
-## Events
-Das Plugin triggert folgende Events:
-- `readmore:loaded`: Wird ausgelöst, wenn neuer Content geladen wurde
-
-## Entwickler
-- Unterstützt Theme-Anpassungen via CSS
-- Voll kompatibel mit Custom Post Types
-- Hooks für Entwickler verfügbar
-
-## Mindestanforderungen
+## Anforderungen
 - WordPress 5.0 oder höher
-- PHP 7.0 oder höher
-- JavaScript aktiviert im Browser
+- PHP 7.2 oder höher
 
 ## Lizenz
-GPLv2 oder später 
+GPL v2 oder später 

@@ -1,9 +1,13 @@
 <?php
 /**
  * Plugin Name: Read More Ajax
+ * Plugin URI: https://github.com/stefangilgen/read-more
  * Description: Lädt "Weiterlesen" Inhalte per AJAX nach
  * Version: 1.0.0
- * Author: Your Name
+ * Author: Stefan Gilgen
+ * Author URI: https://blitzdonner.ch
+ * License: GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: read-more-ajax
  */
 
@@ -21,23 +25,13 @@ class ReadMoreAjax {
     
     private function __construct() {
         add_action('wp_enqueue_scripts', [$this, 'enqueueScripts']);
-        add_action('wp_ajax_load_more_content', [$this, 'loadMoreContent']);
-        add_action('wp_ajax_nopriv_load_more_content', [$this, 'loadMoreContent']);
-        
-        // Füge Klasse zum more-link hinzu
-        add_filter('the_content_more_link', [$this, 'addMoreLinkClass']);
+        add_action('wp_ajax_load_full_post', [$this, 'loadFullPost']);
+        add_action('wp_ajax_nopriv_load_full_post', [$this, 'loadFullPost']);
+        add_filter('the_content_more_link', [$this, 'modifyReadMoreLink']);
+        add_filter('excerpt_more', [$this, 'modifyExcerptMore']);
     }
     
     public function enqueueScripts() {
-        // CSS einbinden
-        wp_enqueue_style(
-            'read-more-ajax',
-            plugins_url('css/read-more.css', __FILE__),
-            [],
-            '1.0.0'
-        );
-
-        // JavaScript einbinden
         wp_enqueue_script(
             'read-more-ajax',
             plugins_url('js/read-more.js', __FILE__),
@@ -52,7 +46,7 @@ class ReadMoreAjax {
         ]);
     }
     
-    public function loadMoreContent() {
+    public function loadFullPost() {
         check_ajax_referer('read_more_nonce', 'nonce');
         
         $post_id = intval($_POST['post_id']);
@@ -65,24 +59,29 @@ class ReadMoreAjax {
             wp_send_json_error('Post not found');
         }
         
+        // Hole den vollständigen Inhalt
         $content = apply_filters('the_content', $post->post_content);
-        $more_content = $this->getContentAfterMore($content);
+        
+        // Wenn es einen "Weiterlesen"-Trenner gibt, hole nur den Teil danach
+        if (strpos($post->post_content, '<!--more-->') !== false) {
+            $parts = explode('<!--more-->', $content);
+            $content = isset($parts[1]) ? trim($parts[1]) : $content;
+        }
         
         wp_send_json_success([
-            'content' => $more_content
+            'content' => $content,
+            'replace_all' => strpos($post->post_content, '<!--more-->') === false
         ]);
     }
     
-    private function getContentAfterMore($content) {
-        $parts = explode('<!--more-->', $content);
-        return isset($parts[1]) ? trim($parts[1]) : '';
-    }
-
-    public function addMoreLinkClass($link) {
+    public function modifyReadMoreLink($link) {
         global $post;
-        // Füge data-post-id Attribut hinzu
-        $link = str_replace('<a', '<a data-post-id="' . $post->ID . '"', $link);
-        return str_replace('more-link', 'more-link read-more-ajax', $link);
+        return str_replace('<a', '<a data-post-id="' . $post->ID . '"', $link);
+    }
+    
+    public function modifyExcerptMore($more) {
+        global $post;
+        return ' ... <a class="more-link" data-post-id="' . $post->ID . '" href="' . get_permalink($post->ID) . '">Weiterlesen</a>';
     }
 }
 
